@@ -1,0 +1,36 @@
+[client]
+# 默认字符集
+default-character-set=utf8mb4
+
+[mysqld]
+# 字符集
+character-set-server=utf8mb4
+collation-server=utf8mb4_general_ci
+
+# 服务器引擎
+default-storage-engine=InnoDB
+
+# 表名小写
+# lower_case_table_names=1
+
+# 为每个session 分配的内存，在事务过程中用来存储二进制日志的缓存
+binlog_cache_size=1M
+
+# binlog 格式 row statement mixed
+binlog_format=mixed
+
+# 忽略的数据库binlog
+binlog-ignore-db=mysql,information_schema
+
+# 到期自动删除
+expire_logs_day=7
+
+# 跳过主从复制中遇到的所有错误或指定类型的错误，避免slave端复制中断。
+# 如：1062错误是指一些主键重复，1032错误是因为主从数据库数据不一致
+slave_skip_errors=1062
+
+# 设置server_id，一般设置为IP,注意要唯一
+server-id=1
+
+# bin-log
+log_bin=mariadb-bin

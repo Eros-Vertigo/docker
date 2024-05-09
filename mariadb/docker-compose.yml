@@ -1,0 +1,78 @@
+version: "3"
+services:
+  mariadb-master:
+    image: mariadb:10.7.1
+    networks:
+      - db_network
+    container_name: mariadb-master
+    restart: always
+    ports:
+      - "21891:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=mysql-666
+    volumes:
+      - ./master/data:/var/lib/mysql:cached
+      - ./master.cnf:/etc/mysql/my.cnf:cached
+    security_opt:
+      - seccomp:unconfined
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+  mariadb-slave-1:
+    image: mariadb:10.7.1
+    networks:
+      - db_network
+    container_name: mariadb-slave-1
+    restart: always
+    ports:
+      - "21892:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=mysql-666
+    volumes:
+      - ./slave/data:/var/lib/mysql:cached
+      - ./slave.cnf:/etc/mysql/my.cnf:cached
+    security_opt:
+      - seccomp:unconfined
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+  mariadb-slave-2:
+    image: mariadb:10.7.1
+    networks:
+      - db_network
+    container_name: mariadb-slave-2
+    restart: always
+    ports:
+      - "21893:3306"
+    environment:
+      - MARIADB_ROOT_PASSWORD=mysql-666
+    volumes:
+      - ./slave-2/data:/var/lib/mysql:cached
+      - ./slave-2.cnf:/etc/mysql/my.cnf:cached
+    security_opt:
+      - seccomp:unconfined
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "500m"
+  proxysql:
+    image: proxysql/proxysql:2.1.0_arm64
+    networks:
+      - db_network
+    container_name: proxysql
+    restart: always
+    ports:
+      - "16032:6032"
+      - "16033:6033"
+      - "16070:6070"
+    volumes:
+      - ./proxysql.cnf:/etc/proxysql.cnf
+networks:
+  db_network:
+    driver: bridge
+
+
+
+   
